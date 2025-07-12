@@ -1,35 +1,29 @@
 /**@jsxImportSource @emotion/react */
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 import * as s from "./styles";
-import { useEffect, useState } from "react";
-import { CiSquareRemove } from "react-icons/ci";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { useCallback, useEffect, useState } from "react";
+import { useCheckStore } from "../store/useCheckStore";
 
-function ToDoListItem({ todo, onRemove }) {
+function ToDoListItem({ todo, onToggle, handleOnRemove }) {
   const { id, text, checked } = todo;
-  const [check, setCheck] = useState(checked);
-
-  useEffect(() => {
-    setCheck(checked);
-  }, [checked]);
-
-  const handleCheckedOnClick = () => {
-    setCheck((prev) => !prev);
-  };
 
   return (
-    <li key={id}>
-      <div>
-        {check ? (
-          <ImCheckboxChecked onClick={handleCheckedOnClick} />
-        ) : (
-          <ImCheckboxUnchecked onClick={handleCheckedOnClick} />
-        )}
-        <div>{text}</div>
-        <div onClick={() => onRemove(id)}>
-          <CiSquareRemove />
+    <>
+      <div key={id} css={s.todoItem}>
+        <div css={s.textContainer} onClick={() => onToggle(id)}>
+          {checked ? (
+            <ImCheckboxChecked css={s.checked} />
+          ) : (
+            <ImCheckboxUnchecked />
+          )}
+          <h1>{text}</h1>
+        </div>
+        <div css={s.deleteItem} onClick={() => handleOnRemove(id)}>
+          <RiDeleteBin5Line />
         </div>
       </div>
-    </li>
+    </>
   );
 }
 
